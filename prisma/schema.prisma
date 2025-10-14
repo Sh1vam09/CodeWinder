@@ -1,0 +1,160 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id             String        @id @default(cuid())
+  username       String        @unique
+  email          String        @unique
+  password       String
+  avatarUrl      String?
+  bio            String?
+  rating         Int           @default(800)
+  badges         Badge[]
+  teams          TeamMember[]
+  messages       Message[]
+  questions      Question[]
+  answers        Answer[]
+  blogPosts      BlogPost[]
+  comments       Comment[]
+  contestsJoined ContestJoin[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Badge {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  iconUrl     String?
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+  createdAt   DateTime @default(now())
+}
+
+model Team {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  tags        String[]
+  createdBy   User         @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  members     TeamMember[]
+  messages    Message[]
+  events      TeamEvent[]
+  createdAt   DateTime     @default(now())
+}
+
+model TeamMember {
+  id       String   @id @default(cuid())
+  team     Team     @relation(fields: [teamId], references: [id])
+  teamId   String
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+  role     String   @default("member") // could be 'leader', 'member', 'moderator'
+  joinedAt DateTime @default(now())
+
+  @@unique([teamId, userId])
+}
+
+model TeamEvent {
+  id          String   @id @default(cuid())
+  team        Team     @relation(fields: [teamId], references: [id])
+  teamId      String
+  title       String
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  sender    User     @relation(fields: [senderId], references: [id])
+  senderId  String
+  team      Team?    @relation(fields: [teamId], references: [id])
+  teamId    String?
+  chatType  ChatType @default(WORLD)
+  createdAt DateTime @default(now())
+}
+
+enum ChatType {
+  WORLD
+  TEAM
+}
+
+model BlogPost {
+  id        String    @id @default(cuid())
+  title     String
+  content   String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Comment {
+  id         String    @id @default(cuid())
+  content    String
+  author     User      @relation(fields: [authorId], references: [id])
+  authorId   String
+  blogPost   BlogPost? @relation(fields: [blogPostId], references: [id])
+  blogPostId String?
+  createdAt  DateTime  @default(now())
+}
+
+model Contest {
+  id           String        @id @default(cuid())
+  title        String
+  platform     String
+  startTime    DateTime
+  endTime      DateTime
+  description  String?
+  participants ContestJoin[]
+  createdAt    DateTime      @default(now())
+}
+
+model ContestJoin {
+  id        String   @id @default(cuid())
+  contest   Contest  @relation(fields: [contestId], references: [id])
+  contestId String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  joinedAt  DateTime @default(now())
+
+  @@unique([contestId, userId])
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  votes     Int      @default(0)
+  answers   Answer[]
+  createdAt DateTime @default(now())
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  content    String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   String
+  votes      Int      @default(0)
+  createdAt  DateTime @default(now())
+}
