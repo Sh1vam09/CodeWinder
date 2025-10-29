@@ -9,20 +9,20 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800">
         <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <a href="/" className="flex items-center gap-3">
             <div className="w-8 h-8 bg-orange-600 flex items-center justify-center rounded">
               <Code className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold">CodeWinder</span>
-          </div>
+          </a>
 
-          {/* Navigation Links */}
+          {/* Navigation Links - USING <a> TAGS (FIXED) */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">World Chat</a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">Teams</a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">Blog</a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">Contests</a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors">Q&A</a>
+            <a href="/chat" className="text-gray-300 hover:text-white transition-colors">World Chat</a>
+            <a href="/teams" className="text-gray-300 hover:text-white transition-colors">Teams</a>
+            <a href="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</a>
+            <a href="/contests" className="text-gray-300 hover:text-white transition-colors">Contests</a>
+            <a href="/qa" className="text-gray-300 hover:text-white transition-colors">Q&A</a>
           </div>
 
           {/* Auth Buttons */}
@@ -166,9 +166,10 @@ export default function Home() {
             <p className="text-base md:text-lg text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
               Join a vibrant community of competitive programmers. Sharpen your skills, collaborate with peers, and compete exciting contests.
             </p>
-            <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold px-10 py-4 rounded-xl text-base transition-colors shadow-lg shadow-orange-600/30">
+            {/* Direct access to Contests or another main area */}
+            <a href="/contests" className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold px-10 py-4 rounded-xl text-base transition-colors shadow-lg shadow-orange-600/30">
               Get Started
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -179,65 +180,65 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold mb-12">Quick Navigation</h2>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {/* World Chat */}
-            <div className="flex flex-col items-start">
-              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl">
+            {/* World Chat - USING <a> TAGS (FIXED) */}
+            <a href="/chat" className="flex flex-col items-start group">
+              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl group-hover:shadow-orange-500/30 transition-shadow duration-300">
                 <img
-                  src="\worldchat.png"
+                  src="/worldchat.png"
                   alt="worldchat"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p className="text-white font-medium text-lg">World Chat</p>
-            </div>
+              <p className="text-white font-medium text-lg group-hover:text-orange-500 transition-colors">World Chat</p>
+            </a>
 
-            {/* Teams */}
-            <div className="flex flex-col items-start">
-              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl">
+            {/* Teams - USING <a> TAGS (FIXED) */}
+            <a href="/teams" className="flex flex-col items-start group">
+              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl group-hover:shadow-orange-500/30 transition-shadow duration-300">
                 <img
                   src="/Team.png"
                   alt="Team"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p className="text-white font-medium text-lg">Teams</p>
-            </div>
+              <p className="text-white font-medium text-lg group-hover:text-orange-500 transition-colors">Teams</p>
+            </a>
 
-            {/* Blog */}
-            <div className="flex flex-col items-start">
-              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl">
+            {/* Blog - USING <a> TAGS (FIXED) */}
+            <a href="/blog" className="flex flex-col items-start group">
+              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl group-hover:shadow-orange-500/30 transition-shadow duration-300">
                 <img
-                  src="\blog.png"
+                  src="/blog.png"
                   alt="Blog"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p className="text-white font-medium text-lg">Blog</p>
-            </div>
+              <p className="text-white font-medium text-lg group-hover:text-orange-500 transition-colors">Blog</p>
+            </a>
 
-            {/* Contests */}
-            <div className="flex flex-col items-start">
-              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl">
+            {/* Contests - USING <a> TAGS (FIXED) */}
+            <a href="/contests" className="flex flex-col items-start group">
+              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl group-hover:shadow-orange-500/30 transition-shadow duration-300">
                 <img
                   src="/contest.png"
                   alt="Contest"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p className="text-white font-medium text-lg">Contests</p>
-            </div>
+              <p className="text-white font-medium text-lg group-hover:text-orange-500 transition-colors">Contests</p>
+            </a>
 
-            {/* Q&A */}
-                        <div className="flex flex-col items-start">
-              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl">
+            {/* Q&A - USING <a> TAGS (FIXED) */}
+            <a href="/qa" className="flex flex-col items-start group">
+              <div className="w-full aspect-square rounded-2xl flex items-center justify-center mb-4 relative overflow-hidden shadow-xl group-hover:shadow-orange-500/30 transition-shadow duration-300">
                 <img
                   src="/QA.png"
                   alt="QA"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <p className="text-white font-medium text-lg">Q&A</p>
-            </div>
+              <p className="text-white font-medium text-lg group-hover:text-orange-500 transition-colors">Q&A</p>
+            </a>
           </div>
         </div>
       </section>
@@ -282,12 +283,13 @@ export default function Home() {
                 <p className="text-gray-400 mb-10 leading-relaxed text-base">
                   Join the ultimate coding showdown! Compete against top programmers worldwide in a series of challenging problems. Win prizes and recognition.
                 </p>
-                <button className="bg-zinc-800 hover:bg-zinc-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center gap-3 shadow-lg">
+                {/* Direct link to Contests Page for registration - USING <a> TAGS (FIXED) */}
+                <a href="/contests" className="bg-zinc-800 hover:bg-zinc-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center gap-3 shadow-lg">
                   Register Now
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
-                </button>
+                </a>
               </div>
 
               {/* Right Decorative Section */}
