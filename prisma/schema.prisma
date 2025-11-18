@@ -1,37 +1,92 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
 model User {
-  id             String        @id @default(cuid())
-  username       String        @unique
-  email          String        @unique
-  password       String
-  avatarUrl      String?
-  bio            String?
-  rating         Int           @default(800)
-  badges         Badge[]
-  teams          TeamMember[]
-  messages       Message[]
-  questions      Question[]
-  answers        Answer[]
-  blogPosts      BlogPost[]
-  comments       Comment[]
+  id            String    @id @default(cuid())
+  username      String?   @unique
+  email         String    @unique
+  name          String?
+  emailVerified Boolean   @default(false)
+  image         String?   @map("avatarUrl")
+  
+  // BetterAuth Relations
+  sessions      Session[]
+  accounts      Account[]
+
+  // Existing Application Fields
+  password      String?
+  bio           String?
+  rating        Int       @default(800)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // App Relations
+  badges        Badge[]
+  teams         TeamMember[]
+  
+  // --- FIX: Added this field to complete the relationship ---
+  createdTeams  Team[]    @relation("TeamCreator") 
+  
+  messages      Message[]
+  questions     Question[]
+  answers       Answer[]
+  blogPosts     BlogPost[]
+  comments      Comment[]
   contestsJoined ContestJoin[]
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
 }
+
+// --- BetterAuth Models ---
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+}
+
+// --- Existing Application Models ---
 
 model Badge {
   id          String   @id @default(cuid())
@@ -47,8 +102,11 @@ model Team {
   id          String       @id @default(cuid())
   name        String
   description String?
-  tags        String[]
-  createdBy   User         @relation(fields: [creatorId], references: [id])
+  tags        String       @default("") // SQLite does not support String[], storing as CSV
+  
+  // --- FIX: Added relation name to match User model ---
+  createdBy   User         @relation("TeamCreator", fields: [creatorId], references: [id])
+  
   creatorId   String
   members     TeamMember[]
   messages    Message[]
@@ -62,7 +120,7 @@ model TeamMember {
   teamId   String
   user     User     @relation(fields: [userId], references: [id])
   userId   String
-  role     String   @default("member") // could be 'leader', 'member', 'moderator'
+  role     String   @default("member") 
   joinedAt DateTime @default(now())
 
   @@unique([teamId, userId])
@@ -85,13 +143,8 @@ model Message {
   senderId  String
   team      Team?    @relation(fields: [teamId], references: [id])
   teamId    String?
-  chatType  ChatType @default(WORLD)
+  chatType  String   @default("WORLD") // SQLite doesn't support Enums natively, use String
   createdAt DateTime @default(now())
-}
-
-enum ChatType {
-  WORLD
-  TEAM
 }
 
 model BlogPost {
