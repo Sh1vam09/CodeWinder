@@ -1,26 +1,29 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import Navbar from '@/components/Navbar'; // Import the new component
+import Providers from '@/components/Providers'; // Import the new Providers component
 
 const inter = Inter({ subsets: ['latin'] });
 
+// This metadata export now works because layout.tsx is a Server Component
 export const metadata: Metadata = {
-  title: 'CodeWinder',
-  description: 'Competitive Programming Hub',
+  title: 'CodeWinder',
+  description: 'Competitive Programming Hub',
 };
 
 export default function RootLayout({
-  children,
+  children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Navbar /> 
-        {children}
-      </body>
-    </html>
-  );
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        {/* Use the Providers component for client-side context */}
+        <Providers>
+          {children}
+        </Providers>
+      </body>
+    </html>
+  );
 }

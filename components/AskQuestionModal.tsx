@@ -27,7 +27,8 @@ export function AskQuestionModal({
     setLoading(true);
 
     try {
-      const res = await fetch("/api/qa/questions", {
+      // FIX: Changed fetch URL from "/api/qa/questions" (plural) to "/api/qa/question" (singular)
+      const res = await fetch("/api/qa/question", {
         method: "POST",
         body: JSON.stringify({ title, content }),
         headers: { "Content-Type": "application/json" },

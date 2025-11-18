@@ -1,9 +1,15 @@
+// Navbar.tsx
 'use client';
 
 import Link from 'next/link';
-import { Code } from 'lucide-react';
+import { Code, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useSession, signIn, signOut } from 'better-auth/react';
 
-export default function Navbar() {
+export default function Navbar(){
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === 'authenticated';
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800">
       <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
@@ -34,15 +40,38 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Auth Buttons */}
-        {/* Auth Buttons */}
+        {/* Auth Buttons - Conditional Rendering */}
         <div className="flex items-center gap-4">
-          <Link href="/signup" className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors">
-            Sign Up
-          </Link>
-          <Link href="/login" className="text-gray-300 hover:text-white font-semibold px-6 py-2 transition-colors">
-            Log In
-          </Link>
+          {status === 'loading' ? (
+             <div className="text-gray-500">Loading...</div>
+          ) : isAuthenticated ? (
+            // Show Profile Button/Avatar when authenticated
+            <Link href="/profile" passHref>
+              <Button 
+                variant="ghost" 
+                className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+              >
+                <User className="w-4 h-4" />
+                Profile
+              </Button>
+            </Link>
+          ) : (
+            // Show Sign Up and Log In buttons when unauthenticated
+            <>
+              <Button 
+                onClick={() => signIn('google')} 
+                variant="ghost" 
+                className="text-gray-300 hover:text-white font-semibold px-4 py-2 rounded-lg transition-colors"
+              >
+                Log In
+              </Button>
+              <Link href="/signup" passHref>
+                <Button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors">
+                  Sign Up
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>

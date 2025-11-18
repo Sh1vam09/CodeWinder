@@ -28,7 +28,8 @@ export default function QAPage() {
   // Function to fetch questions (reused when a new question is posted)
   const fetchQuestions = async () => {
     try {
-      const res = await fetch("/api/qa/questions");
+      // FIX: Changed fetch URL from "/api/qa/questions" to "/api/qa/question"
+      const res = await fetch("/api/qa/question");
       if (res.ok) {
         const data = await res.json();
         setQuestions(data);
