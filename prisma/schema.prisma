@@ -17,6 +17,9 @@ model User {
   name          String?
   emailVerified Boolean   @default(false)
   image         String?   @map("avatarUrl")
+  website       String?
+  githubHandle  String?
+  twitterHandle String?
   
   // BetterAuth Relations
   sessions      Session[]
@@ -196,17 +199,20 @@ model Question {
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
   votes     Int      @default(0)
-  answers   Answer[]
+  answers   Answer[] // This relation is correct
   createdAt DateTime @default(now())
 }
 
 model Answer {
   id         String   @id @default(cuid())
   content    String
-  question   Question @relation(fields: [questionId], references: [id])
-  questionId String
+  createdAt  DateTime @default(now())
+
+  // Relation to User
   author     User     @relation(fields: [authorId], references: [id])
   authorId   String
-  votes      Int      @default(0)
-  createdAt  DateTime @default(now())
+
+  // Relation to Question (Fix this part)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
 }
