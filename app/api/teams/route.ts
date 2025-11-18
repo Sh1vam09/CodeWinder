@@ -3,6 +3,11 @@ import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
+// 1. Helper function to generate a random 6-digit code
+function generateJoinCode() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
 export async function GET() {
   const teams = await prisma.team.findMany({
     include: {
@@ -21,13 +26,25 @@ export async function POST(req: Request) {
 
     const { name, description, tags } = await req.json();
 
-    // Transaction: Create team AND add creator as a member
-    const team = await prisma.$transaction(async (tx:any) => {
+    // 2. Generate a unique join code
+    let joinCode = generateJoinCode();
+    let isUnique = false;
+
+    // Simple retry logic to ensure the code is unique
+    while (!isUnique) {
+      const existing = await prisma.team.findUnique({ where: { joinCode } });
+      if (!existing) isUnique = true;
+      else joinCode = generateJoinCode();
+    }
+
+    // 3. Transaction: Create team with the new joinCode
+    const team = await prisma.$transaction(async (tx: any) => {
       const newTeam = await tx.team.create({
         data: {
           name,
           description,
           tags: tags || "",
+          joinCode: joinCode, // <--- This field is required now!
           creatorId: session.user.id,
         },
       });
@@ -45,7 +62,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(team);
   } catch (error) {
-    console.error(error);
+    console.error("Error creating team:", error);
     return NextResponse.json({ error: "Error creating team" }, { status: 500 });
   }
 }

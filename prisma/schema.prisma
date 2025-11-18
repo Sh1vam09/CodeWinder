@@ -20,7 +20,7 @@ model User {
   website       String?
   githubHandle  String?
   twitterHandle String?
-  
+
   // BetterAuth Relations
   sessions      Session[]
   accounts      Account[]
@@ -35,10 +35,10 @@ model User {
   // App Relations
   badges        Badge[]
   teams         TeamMember[]
-  
+
   // --- FIX: Added this field to complete the relationship ---
-  createdTeams  Team[]    @relation("TeamCreator") 
-  
+  createdTeams  Team[]    @relation("TeamCreator")
+
   messages      Message[]
   questions     Question[]
   answers       Answer[]
@@ -105,10 +105,8 @@ model Team {
   name        String
   description String?
   tags        String       @default("") // SQLite does not support String[], storing as CSV
-  
-  // --- FIX: Added relation name to match User model ---
+  joinCode    String       @unique // <--- Add this line
   createdBy   User         @relation("TeamCreator", fields: [creatorId], references: [id])
-  
   creatorId   String
   members     TeamMember[]
   messages    Message[]
@@ -122,7 +120,7 @@ model TeamMember {
   teamId   String
   user     User     @relation(fields: [userId], references: [id])
   userId   String
-  role     String   @default("member") 
+  role     String   @default("member")
   joinedAt DateTime @default(now())
 
   @@unique([teamId, userId])

@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Users } from "lucide-react";
+import { Users, Hash, Copy } from "lucide-react"; // Added icons
 import { CreateTeamModal } from "@/components/CreateTeamModal";
+import { JoinTeamModal } from "@/components/JoinTeamModal"; // Import the new modal
 
 interface Team {
   id: string;
   name: string;
   description: string;
   tags: string;
+  joinCode: string; // Added joinCode
   _count: {
     members: number;
   };
@@ -39,6 +41,12 @@ export default function TeamsPage() {
     fetchTeams();
   }, []);
 
+  // Helper to copy code to clipboard
+  const copyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    alert(`Code ${code} copied to clipboard!`);
+  };
+
   return (
     <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-12 px-6">
       <div className="max-w-[1400px] mx-auto">
@@ -52,10 +60,8 @@ export default function TeamsPage() {
           <div className="flex gap-4 mb-10">
             <CreateTeamModal onTeamCreated={fetchTeams} />
 
-            {/* Placeholder for future functionality */}
-            <button className="bg-zinc-800 hover:bg-zinc-700 text-gray-200 font-semibold px-6 py-2 rounded-lg transition-colors border border-zinc-700">
-              Join with Code
-            </button>
+            {/* Updated Join Button */}
+            <JoinTeamModal onTeamJoined={fetchTeams} />
           </div>
 
           {/* Teams Grid */}
@@ -72,14 +78,25 @@ export default function TeamsPage() {
               teams.map((team) => (
                 <div
                   key={team.id}
-                  className="p-5 bg-zinc-900 rounded-2xl shadow-xl border border-zinc-800 hover:border-teal-500 transition-all cursor-pointer group flex flex-col justify-between"
+                  className="p-5 bg-zinc-900 rounded-2xl shadow-xl border border-zinc-800 hover:border-teal-500 transition-all flex flex-col justify-between group"
                 >
                   <div>
-                    {/* Generated Logo Visual */}
-                    <div className="w-full h-32 flex items-center justify-center rounded-lg mb-4 bg-zinc-800 group-hover:bg-zinc-800/80 transition-colors">
+                    {/* Team Avatar */}
+                    <div className="w-full h-32 flex items-center justify-center rounded-lg mb-4 bg-zinc-800 group-hover:bg-zinc-800/80 transition-colors relative">
                       <span className="text-3xl font-bold text-teal-500 uppercase">
                         {team.name.substring(0, 2)}
                       </span>
+
+                      {/* JOIN CODE DISPLAY */}
+                      <div
+                        className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs text-teal-400 font-mono border border-teal-500/30 flex items-center gap-2 cursor-pointer hover:bg-black/80"
+                        onClick={() => copyCode(team.joinCode)}
+                        title="Click to copy join code"
+                      >
+                        <Hash className="w-3 h-3" />
+                        {team.joinCode}
+                        <Copy className="w-3 h-3 ml-1 opacity-50" />
+                      </div>
                     </div>
 
                     <h4 className="text-xl font-bold mb-1 group-hover:text-teal-400 transition-colors">
@@ -108,7 +125,7 @@ export default function TeamsPage() {
                     </div>
                   </div>
 
-                  {/* Footer: Members Count */}
+                  {/* Footer */}
                   <div className="pt-4 border-t border-zinc-800 flex items-center justify-between text-sm text-gray-500">
                     <span className="flex items-center gap-1">
                       <Users className="w-4 h-4" /> {team._count.members}{" "}
