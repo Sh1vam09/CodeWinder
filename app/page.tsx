@@ -5,38 +5,6 @@ import { Users, FileText, Trophy, MessageCircle, Code } from 'lucide-react';
 export default function Home() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-      {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800">
-        <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
-          {/* Logo */}
-          <a href="/" className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-orange-600 flex items-center justify-center rounded">
-              <Code className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold">CodeWinder</span>
-          </a>
-
-          {/* Navigation Links - USING <a> TAGS (FIXED) */}
-          <div className="hidden md:flex items-center gap-8">
-            <a href="/chat" className="text-gray-300 hover:text-white transition-colors">World Chat</a>
-            <a href="/teams" className="text-gray-300 hover:text-white transition-colors">Teams</a>
-            <a href="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</a>
-            <a href="/contests" className="text-gray-300 hover:text-white transition-colors">Contests</a>
-            <a href="/qa" className="text-gray-300 hover:text-white transition-colors">Q&A</a>
-          </div>
-
-          {/* Auth Buttons */}
-          <div className="flex items-center gap-4">
-            <button className="bg-orange-600 hover:bg-orange-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors">
-              Sign Up
-            </button>
-            <button className="text-gray-300 hover:text-white font-semibold px-6 py-2 transition-colors">
-              Log In
-            </button>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center pt-20">
         {/* Hero Content Container with dark overlay */}

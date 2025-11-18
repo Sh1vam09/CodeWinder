@@ -66,17 +66,6 @@ export default function BlogPage() {
     return (
         <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-12 px-6">
             <div className="max-w-[1000px] mx-auto">
-                {/* Mock Global Header */}
-                <div className="absolute top-0 left-0 w-full bg-zinc-950/90 backdrop-blur-sm z-50 py-4 px-6 border-b border-zinc-800 flex items-center justify-between">
-                    <h1 className="text-xl font-bold text-white">CodeWinder</h1>
-                    <nav className="hidden md:flex space-x-6 text-gray-300">
-                        <a href="/home" className="hover:text-orange-500 transition-colors">Home</a>
-                        <a href="/contests" className="hover:text-orange-500 transition-colors">Contests</a>
-                        <a href="/blog" className="text-orange-500 font-semibold border-b-2 border-orange-500 pb-1">Blog</a>
-                        <a href="/profile" className="hover:text-orange-500 transition-colors">Profile</a>
-                    </nav>
-                </div>
-
                 <div className="mt-8">
                     <h1 className="text-3xl font-bold mb-10 text-white text-center">
                         Blog & Contest Updates
