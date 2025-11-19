@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
-    provider: "postgresql", // <--- CHANGED from "sqlite"
+    provider: "postgresql",
   }),
   emailAndPassword: {
     enabled: true,
@@ -19,4 +19,9 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
+  // Add this to fix production issues
+  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
+  trustedOrigins: [
+    process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000"
+  ],
 });
