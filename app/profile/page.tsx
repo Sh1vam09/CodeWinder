@@ -152,7 +152,7 @@ export default function ProfilePage() {
                     </Link>
 
                     <Button 
-                        onClick={() => signOut({ callbackUrl: '/' })} 
+                        onClick={() => signOut()} 
                         variant="destructive" 
                         className="w-full flex items-center gap-2"
                     >
