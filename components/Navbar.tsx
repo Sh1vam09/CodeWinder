@@ -3,17 +3,32 @@
 import Link from "next/link";
 import { Code, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSession, signIn } from "@/lib/auth-client"; // Import from your local client
+import { useSession, signIn } from "@/lib/auth-client";
 
 export default function Navbar() {
   // Better Auth returns 'isPending' and 'data', not 'status'
   const { data: session, isPending } = useSession();
 
+  // --- Sound Effect Function ---
+  const playSound = () => {
+    // This creates a new audio object and plays it immediately
+    const audio = new Audio("/click.mp3");
+    audio.play().catch((err) => {
+      // Optional: Catch errors if user hasn't interacted with page yet
+      console.error("Audio play failed:", err);
+    });
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-zinc-900/95 backdrop-blur-sm border-b border-zinc-800">
       <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
+
+        {/* Logo with Sound Effect */}
+        <Link
+            href="/"
+            onClick={playSound} // <--- Triggers the sound
+            className="flex items-center gap-3"
+        >
           <div className="w-8 h-8 bg-orange-600 flex items-center justify-center rounded">
             <Code className="w-5 h-5 text-white" />
           </div>
