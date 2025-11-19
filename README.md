@@ -61,16 +61,17 @@ cd codewinder
 ```bash
 npm install
 ```
-### 3. Configure Environment Variables
-# Database (Supabase)
+## 3. Configure Environment Variables
+
+#### Database (Supabase)
 DATABASE_URL="your-transaction-connection-string"
 DIRECT_URL="your-session-connection-string"
 
-# Authentication (Better Auth)
+#### Authentication (Better Auth)
 BETTER_AUTH_SECRET="generate-a-random-secret"
 NEXT_PUBLIC_BETTER_AUTH_URL="http://localhost:3000"
 
-# OAuth Providers
+#### OAuth Providers
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 GITHUB_CLIENT_ID="your-github-client-id"
