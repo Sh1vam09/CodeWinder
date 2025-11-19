@@ -3,12 +3,16 @@ import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
-// GET: Fetch all blog posts
+// ---------------------------------------------------------
+// FIX: Force dynamic
+export const dynamic = "force-dynamic";
+// ---------------------------------------------------------
+
 export async function GET() {
   try {
     const posts = await prisma.blogPost.findMany({
       include: {
-        author: { select: { name: true, image: true } }, // select specific fields
+        author: { select: { name: true, image: true } },
         _count: { select: { comments: true } },
       },
       orderBy: { createdAt: "desc" },
@@ -22,7 +26,6 @@ export async function GET() {
   }
 }
 
-// POST: Create a new blog post
 export async function POST(req: Request) {
   try {
     const session = await auth.api.getSession({ headers: await headers() });
