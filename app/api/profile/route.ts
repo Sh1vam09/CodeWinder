@@ -44,13 +44,26 @@ export async function PATCH(req: Request) {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+    // --- FIX START ---
+    // Fetch the current user data from the database to ensure 'username' is available for comparison
+    const currentUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { username: true, id: true },
+    });
+
+    if (!currentUser) {
+      return NextResponse.json({ error: "User profile data not found" }, { status: 404 });
+    }
+    // --- FIX END ---
+
     const body = await req.json();
     
     // Validate input
     const validatedData = profileSchema.parse(body);
 
     // Check for username collision if they are changing it
-    if (validatedData.username !== session.user.username) {
+    // Use currentUser.username for the comparison
+    if (validatedData.username !== currentUser.username) {
       const existingUser = await prisma.user.findUnique({
         where: { username: validatedData.username },
       });
