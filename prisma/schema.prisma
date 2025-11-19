@@ -21,7 +21,7 @@ model User {
   website       String?
   githubHandle  String?
   twitterHandle String?
-
+  isAdmin       Boolean   @default(false)
   // BetterAuth Relations
   sessions      Session[]
   accounts      Account[]
