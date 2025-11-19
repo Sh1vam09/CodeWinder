@@ -19,9 +19,9 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
-  // Add this to fix production issues
-  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
-  trustedOrigins: [
-    process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000"
-  ],
+  // FIX: Add baseURL with proper fallback
+  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 
+          process.env.VERCEL_URL 
+            ? `https://${process.env.VERCEL_URL}` 
+            : "http://localhost:3000",
 });
